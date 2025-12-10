@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: jobmatcher_api
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jobmatcher
+    username: jobmatcher_user
+    password: secret
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+  flyway:
+    enabled: false
+#    locations: classpath:db/migration
+
+server:
+  port: 8080
+
+# Config servizio AI (in dev locale)
+jobmatcher:
+  ai:
+    base-url: http://localhost:8000
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO

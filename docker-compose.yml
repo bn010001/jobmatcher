@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:15
+    container_name: jobmatcher-db
+    restart: always
+    environment:
+      POSTGRES_DB: jobmatcher
+      POSTGRES_USER: jobmatcher_user
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+
+  jobmatcher_api:
+    build: ./jobmatcher_api
+    container_name: jobmatcher_api
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/jobmatcher
+      - SPRING_DATASOURCE_USERNAME=jobmatcher_user
+      - SPRING_DATASOURCE_PASSWORD=secret
+    depends_on:
+      - postgres
+
+  jobmatcher_ai:
+    build: ./jobmatcher_ai
+    container_name: jobmatcher_ai
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_NAME=all-MiniLM-L6-v2

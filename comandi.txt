@@ -1,0 +1,19 @@
+Componente AI (Python)
+
+cd jobmatcher\jobmatcher_ai
+python -m venv venv
+venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+
+
+Componente server (java/gradle)
+
+cd jobmatcher/jobmatcher_api
+
+Pulizia e ricostruzione calsspath
+gradle --stop
+gradle clean
+gradle build --refresh-dependencies
+
+Avvio
+gradle bootrun

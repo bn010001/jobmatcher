@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.4'
+    id 'io.spring.dependency-management' version '1.1.5'
+}
+
+group = 'com.jobmatcher'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Web REST
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Security + JWT (più avanti aggiungeremo lib JWT specifiche)
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // JPA + PostgreSQL
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    // Bean validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Flyway
+    implementation 'org.flywaydb:flyway-core:10.16.0'
+
+    // OpenAPI/Swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+    // Lombok (facoltativo ma utile)
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}
