@@ -1,19 +1,153 @@
-Componente AI (Python)
+## Avvio in locale (sviluppo)
 
-cd jobmatcher\jobmatcher_ai
-python -m venv venv
-venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+### 0) Prerequisiti
 
+* Docker Desktop avviato
+* Java 17 installato
+* Python 3.11+ (meglio 3.11/3.12)
+* Flutter SDK installato e configurato (`flutter doctor` senza errori)
 
-Componente server (java/gradle)
+---
 
-cd jobmatcher/jobmatcher_api
+## 1) Database (PostgreSQL in Docker)
 
-Pulizia e ricostruzione calsspath
+Dalla root `jobmatcher/`:
+
+```bat
+docker compose up -d postgres
+```
+
+Verifica:
+
+```bat
+docker ps
+```
+
+Dovresti vedere `jobmatcher-db` in running.
+
+---
+
+## 2) Backend API (Spring Boot / Gradle)
+
+```bat
+cd jobmatcher_api
+
+:: Pulizia e ricostruzione classpath (solo se hai cambiato dipendenze)
 gradle --stop
 gradle clean
 gradle build --refresh-dependencies
 
-Avvio
-gradle bootrun
+:: Avvio
+gradle bootRun
+```
+
+Verifica (browser o curl):
+
+* `http://localhost:8080/actuator/health` (se lo hai)
+* oppure il tuo endpoint: `http://localhost:8080/api/health`
+
+---
+
+## 3) Microservizio AI (FastAPI / Python)
+
+```bat
+cd jobmatcher_ai
+
+:: (Solo la prima volta) crea virtualenv
+python -m venv venv
+
+:: Attiva venv
+venv\Scripts\activate.bat
+
+:: Installa dipendenze
+pip install -r requirements.txt
+
+:: Avvia servizio
+uvicorn app.main:app --reload --port 8000
+```
+
+Verifica:
+
+* `http://127.0.0.1:8000/health`
+
+> Nota: al primo avvio scaricherà il modello (può richiedere qualche minuto).
+
+---
+
+## 4) Frontend (Flutter)
+
+### Web (più semplice per test rapidi)
+
+```bat
+cd jobmatcher_app
+flutter pub get
+flutter run -d chrome
+```
+
+### Android (device fisico o emulatore)
+
+```bat
+cd jobmatcher_app
+flutter pub get
+flutter run
+```
+
+Verifica toolchain:
+
+```bat
+flutter doctor
+```
+
+---
+
+## Avvio “rapido” quotidiano (consigliato)
+
+**Terminale 1 (DB):**
+
+```bat
+cd jobmatcher
+docker compose up -d postgres
+```
+
+**Terminale 2 (API):**
+
+```bat
+cd jobmatcher_api
+gradle bootRun
+```
+
+**Terminale 3 (AI):**
+
+```bat
+cd jobmatcher_ai
+venv\Scripts\activate.bat
+uvicorn app.main:app --reload --port 8000
+```
+
+**Terminale 4 (Flutter):**
+
+```bat
+cd jobmatcher_app
+flutter run -d chrome
+```
+
+---
+
+## Spegnere tutto
+
+* Spegni Java/FastAPI: `CTRL + C` nei terminali
+* Spegni DB Docker:
+
+```bat
+docker compose down
+```
+
+---
+
+## Porte usate
+
+* PostgreSQL: `localhost:5432`
+* API (Spring Boot): `localhost:8080`
+* AI (FastAPI): `localhost:8000`
+
+---

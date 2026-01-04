@@ -21,6 +21,8 @@ dependencies {
     // Web REST
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
     // Security + JWT (più avanti aggiungeremo lib JWT specifiche)
     implementation 'org.springframework.boot:spring-boot-starter-security'
 

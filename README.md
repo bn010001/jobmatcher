@@ -86,7 +86,7 @@ Ogni sottoprogetto contiene un proprio `README.md` con istruzioni di setup più 
 * Python 3.11+
 * FastAPI
 * OCR: `pytesseract` + Tesseract OCR
-* NLP / embedding: `sentence-transformers` (es. `all-MiniLM-L6-v2`)
+* NLP / embedding: `sentence-transformers` (es. `bge-m3`)
 * Eventuale uso di `spaCy` per parsing avanzato
 
 **DevOps**
@@ -103,7 +103,7 @@ Ogni sottoprogetto contiene un proprio `README.md` con istruzioni di setup più 
 1. **Clona la repo**
 
 ```bash
-git clone https://github.com/<tuo-utente>/jobmatcher.git
+git clone https://github.com/bnb010001/jobmatcher.git
 cd jobmatcher
 ```
 

@@ -1,18 +1,26 @@
 from typing import Any, Dict, List
 from sentence_transformers import SentenceTransformer
+import os
 
-# TODO: puoi leggere il nome modello da env MODEL_NAME
-_model = SentenceTransformer("all-MiniLM-L6-v2")
+# Legge il nome del modello da variabile d'ambiente, se presente
+MODEL_NAME = os.getenv("MODEL_NAME", "BAAI/bge-m3")
+
+# Caricamento modello globale (evita reload ad ogni richiesta)
+_model = SentenceTransformer(MODEL_NAME)
 
 
 async def parse_cv_and_embed(text: str) -> Dict[str, Any]:
-    # TODO: parsing vero (regex, spaCy, ecc.)
-    # Per ora, stub minimale:
+    """
+    Parsing del CV + embedding semantico tramite modello BAAI/bge-m3.
+    Il parsing avanzato (skills, esperienze, formazione) verrà introdotto successivamente.
+    """
 
-    skills: List[str] = []  # da estrarre in futuro
+    # Stub parsing (verrà esteso)
+    skills: List[str] = []
     experience: List[Dict[str, str]] = []
     education: List[Dict[str, str]] = []
 
+    # Calcolo embedding
     embedding = _model.encode(text).tolist()
 
     return {
@@ -23,5 +31,6 @@ async def parse_cv_and_embed(text: str) -> Dict[str, Any]:
             "skills": skills,
             "languages": []
         },
-        "embedding": embedding
+        "embedding": embedding,
+        "model_used": MODEL_NAME
     }

@@ -71,6 +71,7 @@ jobmatcher_api/
 │  │  │   ├─ config/
 │  │  │   │    └─ AiClientProperties.java
 │  │  │   ├─ controller/
+│  │  │   ├─ dto/
 │  │  │   ├─ domain/
 │  │  │   │    ├─ user/
 │  │  │   │    ├─ candidate/
