@@ -18,10 +18,14 @@ services:
     container_name: jobmatcher_api
     ports:
       - "8080:8080"
+    volumes:
+      - ./data/cv:/app/data/cv
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/jobmatcher
       - SPRING_DATASOURCE_USERNAME=jobmatcher_user
       - SPRING_DATASOURCE_PASSWORD=secret
+      - JOBMATCHER_AI_BASE_URL=http://jobmatcher_ai:8000
+      - JOBMATCHER_STORAGE_LOCAL_ROOT_DIR=/app/data/cv
     depends_on:
       - postgres
 

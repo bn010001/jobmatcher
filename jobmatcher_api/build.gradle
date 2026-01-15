@@ -26,6 +26,12 @@ dependencies {
     // Security + JWT (più avanti aggiungeremo lib JWT specifiche)
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    // JWT (JJWT)
+    implementation "io.jsonwebtoken:jjwt-api:0.12.6"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:0.12.6"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:0.12.6"
+
+
     // JPA + PostgreSQL
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'org.postgresql:postgresql'
@@ -35,6 +41,7 @@ dependencies {
 
     // Flyway
     implementation 'org.flywaydb:flyway-core:10.16.0'
+    runtimeOnly "org.flywaydb:flyway-database-postgresql"
 
     // OpenAPI/Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
@@ -42,6 +49,9 @@ dependencies {
     // Lombok (facoltativo ma utile)
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    testCompileOnly "org.projectlombok:lombok"
+    testAnnotationProcessor "org.projectlombok:lombok"
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -78,7 +78,10 @@ jobmatcher_api/
 │  │  │   │    ├─ company/
 │  │  │   │    ├─ job/
 │  │  │   │    └─ curriculum/
+│  │  │   ├─ exception
 │  │  │   ├─ service/
+│  │  │   │    ├─ ai/
+│  │  │   │    └─ storage/
 │  │  │   └─ repository/
 │  │  └─ resources/
 │  │       ├─ application.yml

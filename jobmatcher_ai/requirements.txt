@@ -5,3 +5,6 @@ python-multipart
 pytesseract
 Pillow
 sentence-transformers
+pypdf 
+python-docx 
+anyio
