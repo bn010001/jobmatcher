@@ -11,6 +11,8 @@ public record CvFileDTO(
         Instant uploadedAt,
         Instant analyzedAt,
         String status,
-        String errorMessage
+        String errorMessage,
+        boolean embedded,
+        String embeddingModel
 ) {}
 

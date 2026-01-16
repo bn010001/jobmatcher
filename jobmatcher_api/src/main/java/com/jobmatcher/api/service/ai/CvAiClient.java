@@ -1,6 +1,8 @@
 package com.jobmatcher.api.service.ai;
 
 import com.jobmatcher.api.dto.CvParseResponse;
+import com.jobmatcher.api.dto.EmbedResponse;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.ByteArrayResource;
@@ -16,6 +18,7 @@ import reactor.core.publisher.Mono;
 @Service
 public class CvAiClient {
     private final WebClient webClient;
+    private record EmbedTextBody(String text) {}
 
     public CvAiClient(@Value("${jobmatcher.ai.base-url}") String baseUrl) {
         this.webClient = WebClient.builder().baseUrl(baseUrl).build();
@@ -105,6 +108,16 @@ public class CvAiClient {
                 .body(BodyInserters.fromMultipartData(builder.build()))
                 .retrieve()
                 .bodyToMono(CvParseResponse.class)
+                .block();
+    }
+
+    public EmbedResponse embedText(String text) {
+        return webClient.post()
+                .uri("/jobs/embed-text") // endpoint python che creeremo
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new EmbedTextBody(text))
+                .retrieve()
+                .bodyToMono(EmbedResponse.class)
                 .block();
     }
 }

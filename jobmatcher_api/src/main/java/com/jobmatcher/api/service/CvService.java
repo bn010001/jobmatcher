@@ -222,6 +222,17 @@ public class CvService {
     }
 
     public CvFileDTO toDto(CvFile cv) {
+        boolean embedded = false;
+        String embeddingModel = null;
+    
+        if (cv.getAnalysisJson() != null) {
+            var emb = cv.getAnalysisJson().get("embedding");
+            embedded = emb != null && emb.isArray() && emb.size() > 0;
+        
+            var model = cv.getAnalysisJson().get("model_used");
+            if (model != null && model.isTextual()) embeddingModel = model.asText();
+        }
+    
         return new CvFileDTO(
                 cv.getId(),
                 cv.getOriginalFilename(),
@@ -230,7 +241,10 @@ public class CvService {
                 cv.getUploadedAt(),
                 cv.getAnalyzedAt(),
                 cv.getStatus() != null ? cv.getStatus().name() : null,
-                cv.getErrorMessage()
+                cv.getErrorMessage(),
+                embedded,
+                embeddingModel
         );
     }
+
 }
