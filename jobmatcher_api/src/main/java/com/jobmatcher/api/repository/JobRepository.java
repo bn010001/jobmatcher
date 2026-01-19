@@ -19,4 +19,7 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
 
     List<Job> findAllByOrderByCreatedAtDesc();
 
+    List<Job> findByOwnerUsernameAndStatusOrderByCreatedAtDesc(String ownerUsername, JobStatus status);
+
+
 }

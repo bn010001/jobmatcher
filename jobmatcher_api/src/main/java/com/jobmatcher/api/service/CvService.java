@@ -1,16 +1,20 @@
 package com.jobmatcher.api.service;
 
 import com.jobmatcher.api.config.CvProperties;
+import com.jobmatcher.api.domain.candidate.CandidateProfile;
 import com.jobmatcher.api.domain.curriculum.CvFile;
 import com.jobmatcher.api.domain.curriculum.CvProcessingStatus;
 import com.jobmatcher.api.repository.CvFileRepository;
 import com.jobmatcher.api.service.storage.StorageService;
 import com.jobmatcher.api.dto.CvAnalysisDTO;
 import com.jobmatcher.api.dto.CvFileDTO;
+import com.jobmatcher.api.service.CandidateProfileService;
 import com.jobmatcher.api.dto.CvParseResponse;
 import com.jobmatcher.api.service.ai.CvAiClient;
 import com.jobmatcher.api.exception.BadRequestException;
 import com.jobmatcher.api.exception.NotFoundException;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.client.RestClientException;
@@ -28,7 +32,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.Instant;
-
 import java.util.*;
 
 @Service
@@ -36,13 +39,15 @@ public class CvService {
 
     private final CvFileRepository repo;
     private final StorageService storage;
+    private final CandidateProfileService candidateProfileService;
     private final CvProperties cvProps;
     private final CvAiClient cvAiClient;
     private final ObjectMapper objectMapper;
 
-    public CvService(CvFileRepository repo, StorageService storage, CvProperties cvProps, CvAiClient cvAiClient, ObjectMapper objectMapper) {
+    public CvService(CvFileRepository repo, StorageService storage, CandidateProfileService candidateProfileService, CvProperties cvProps, CvAiClient cvAiClient, ObjectMapper objectMapper) {
         this.repo = repo;
         this.storage = storage;
+        this.candidateProfileService = candidateProfileService;
         this.cvProps = cvProps;
         this.cvAiClient = cvAiClient;
         this.objectMapper = objectMapper;
@@ -147,7 +152,10 @@ public class CvService {
             cv.setAnalyzedAt(Instant.now());
             cv.setStatus(CvProcessingStatus.PARSED);
             cv.setErrorMessage(null);
+
             repo.save(cv);
+
+            candidateProfileService.setActiveCv(cv.getOwnerUsername(), cv.getId());
 
             return response;
 

@@ -6,8 +6,12 @@ import com.jobmatcher.api.dto.CandidateProfileUpsertRequest;
 import com.jobmatcher.api.exception.BadRequestException;
 import com.jobmatcher.api.exception.NotFoundException;
 import com.jobmatcher.api.repository.CandidateProfileRepository;
+
+import java.util.UUID;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CandidateProfileService {
@@ -49,6 +53,17 @@ public class CandidateProfileService {
         return toDto(saved);
     }
 
+    @Transactional
+    public void setActiveCv(String ownerUsername, UUID cvFileId) {
+        CandidateProfile p = repo.findByOwnerUsername(ownerUsername)
+                .orElseGet(() -> CandidateProfile.builder()
+                        .ownerUsername(ownerUsername)
+                        .build());
+
+        p.setActiveCvFileId(cvFileId);
+        repo.save(p);
+    }
+
     private CandidateProfileDTO toDto(CandidateProfile p) {
         return new CandidateProfileDTO(
                 p.getId(),
@@ -58,6 +73,7 @@ public class CandidateProfileService {
                 p.getEmail(),
                 p.getPhone(),
                 p.getLocation(),
+                p.getActiveCvFileId(),
                 p.getCreatedAt(),
                 p.getUpdatedAt()
         );

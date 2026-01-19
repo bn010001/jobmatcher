@@ -11,6 +11,7 @@ public record CandidateProfileDTO(
         String email,
         String phone,
         String location,
+        UUID activeCvFileId,
         Instant createdAt,
         Instant updatedAt
 ) {}

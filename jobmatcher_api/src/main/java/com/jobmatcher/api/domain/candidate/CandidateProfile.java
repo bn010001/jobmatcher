@@ -45,6 +45,9 @@ public class CandidateProfile {
     @Column(length = 255)
     private String location;
 
+    @Column(name = "active_cv_file_id", columnDefinition = "uuid")
+    private UUID activeCvFileId;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

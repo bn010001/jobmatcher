@@ -4,6 +4,7 @@ import com.jobmatcher.api.domain.job.JobSwipe;
 import com.jobmatcher.api.domain.job.SwipeAction;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,4 +16,7 @@ public interface JobSwipeRepository extends JpaRepository<JobSwipe, UUID> {
     List<JobSwipe> findByCandidateUsernameAndActionOrderByCreatedAtDesc(String candidateUsername, SwipeAction action);
 
     List<JobSwipe> findByCandidateUsernameOrderByCreatedAtDesc(String candidateUsername);
+
+    List<JobSwipe> findByJobIdInAndActionOrderByCreatedAtDesc(Collection<UUID> jobIds, SwipeAction action);
+
 }
