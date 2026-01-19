@@ -49,11 +49,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String token = authHeader.substring("Bearer ".length()).trim();
 
         if (!jwtService.isTokenValid(token)) {
-            filterChain.doFilter(request, response);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
-
 
         // evita di sovrascrivere auth già presente
         if (SecurityContextHolder.getContext().getAuthentication() == null) {

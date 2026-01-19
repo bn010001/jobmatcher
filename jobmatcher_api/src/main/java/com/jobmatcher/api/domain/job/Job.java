@@ -58,6 +58,7 @@ public class Job {
     private Double lon;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     @Column(nullable = false, length = 32)
     private JobStatus status = JobStatus.PUBLISHED;
 
